@@ -1,27 +1,45 @@
 import { useState, useRef } from 'react'
+import { Draggable } from 'react-beautiful-dnd'
+import { v4 as uuidv4 } from 'uuid';
 import './task.css'
 
-export default function Task() {
-    const [enter, setEnter] = useState(false)
+export default function Task({handleKeyPress}) {
+    const [activeInput, setActiveInput] = useState(true)
     const inputRef = useRef(null);
     const taskRef = useRef(null);
+    const id = uuidv4(); 
     const cardStyle = {
-        backgroundColor: enter ?  '#393939': 'none'
+        backgroundColor: !activeInput ?  '#393939': 'rgb(28,27,27)'
       };
-    function handleKeyPress(e){
-        if (e.key === 'Enter') {
-            // Enter key was pressed, trigger your event here
-            setEnter(true)
-            inputRef.current.blur()
-            taskRef.current.style.border = 'none';
-            console.log('Enter key pressed');
-          }
+    
+    const borderStyle = {
+    border: !activeInput ?  'none': '1px solid #a3a3a3'
+    };
+
+    // if(taskRef && activeInput){
+    //     taskRef.current.style.border = '1px solid #a3a3a3';
+    // }
+    function handleFocus(){
+        console.log('focus');
+        setActiveInput(true)
+    }
+
+    function handleBlur(){
+        console.log('unfocus');
+        setActiveInput(false)
     }
 
     return (
-        <div className='Task' ref={taskRef}>
-            <input className='input' style={cardStyle} onKeyDown={handleKeyPress} ref={inputRef}></input>
-        </div>
+        
+           
+                <div className='Task' style={borderStyle} ref={taskRef}> 
+                
+                    <input className='input' style={cardStyle} onFocus={handleFocus} onBlur={handleBlur} onKeyDown={(e)=>{handleKeyPress(e,inputRef, taskRef, setActiveInput)}} ref={inputRef}></input>
+                </div>
+          
+
+        
+
     )
 
 }
