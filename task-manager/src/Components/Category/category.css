@@ -1,0 +1,38 @@
+.category{
+    width: 190px;
+    background-color: rgb(28,27,27);
+    border-radius: 7px;
+    margin: 38px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.CategoryLabel{
+    width: 77px;
+    height: 19px;
+    color: #d1c7c7;
+    padding: 10px 15px;
+}
+
+.customIcon{
+    font-size: 20px;
+    color:#999292;
+    margin-top: 10px;
+    margin-left: 15px;
+    margin-bottom: 0px; 
+}
+
+.childIssues{
+    color:#d1c7c7;
+    margin-top: 8.5px;
+    margin-left: 7.5px;
+}
+
+.addIssue{
+    padding:0px;
+    display: flex;
+    text-decoration: none;
+}
+

@@ -1,0 +1,21 @@
+.Task{
+    width: 159px;
+    height: 62px;
+    background-color: #393939;
+    margin: 7.5px 15px;
+    border-radius: 5px;
+    border: 1px solid #a3a3a3;
+
+}
+
+.input{
+    width: 135px;
+    height: 23px;
+    background-color: rgb(28,27,27);
+    margin: 10px;
+    border-radius: 3px;
+    border: none;
+    outline: none;
+    color: #d1c7c7;
+
+}
