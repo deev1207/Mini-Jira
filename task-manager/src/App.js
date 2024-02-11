@@ -1,21 +1,31 @@
 import './App.css';
 import Category from './Components/Category/category';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
 
 function App() {
-  
 
+  const column_names =['Add', 'In Progress']
+  const column = column_names.map((name,index)=>(
+    {'id':`${index}`, 'name': `${name}`}
+  )
+
+  )
   
 
   return (
-  
-      <div className="App">
 
-          <Category />
+          <div className="App" >
+          {column.map((col)=>{
+            <Category name={col.name} key={col.id} id={col.id} />
+          })
+          }
+          
+          
 
 
-      </div>
- 
+          </div>
+
+
 
   );
 }

@@ -7,10 +7,11 @@
     flex-direction: column;
     justify-content: center;
     padding-bottom: 10px;
+
 }
 
 .CategoryLabel{
-    width: 77px;
+    width: 90px;
     height: 19px;
     color: #d1c7c7;
     padding: 10px 15px;
