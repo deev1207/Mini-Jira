@@ -15,9 +15,9 @@ function App() {
   return (
 
           <div className="App" >
-          {column.map((col)=>{
+          {column.map((col)=>(
             <Category name={col.name} key={col.id} id={col.id} />
-          })
+          ))
           }
           
           
