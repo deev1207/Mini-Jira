@@ -1,14 +1,24 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import './task.css'
 import { Draggable } from 'react-beautiful-dnd';
 
-export default function Task({handleKeyPress, task, index}) {
-    const [activeInput, setActiveInput] = useState(true)
+export default function Task({handleKeyPress, task, index,activeRef}) {
+    const [activeInput, setActiveInput] = useState(activeRef.current)
     const [text, setText] = useState(task.text)
     const inputRef = useRef(null);
     const taskRef = useRef(null);
-  
+    useEffect(()=>{
+        if(!activeInput){
+            taskRef.current.style.border = 'none'
+        }
+
+        else{
+            taskRef.current.style.border ='1px solid #a3a3a3'
+        }
+
+    }, [activeInput])
+    console.log(activeInput + ' move');
     const cardStyle = {
         backgroundColor: !activeInput ?  '#393939': 'rgb(28,27,27)'
       };
@@ -23,13 +33,13 @@ export default function Task({handleKeyPress, task, index}) {
     function handleFocus(){
         console.log('focus');
         setActiveInput(true)
-        taskRef.current.style.border ='1px solid #a3a3a3'
+        // taskRef.current.style.border ='1px solid #a3a3a3'
     }
 
     function handleBlur(){
         console.log('unfocus');
         setActiveInput(false)
-        taskRef.current.style.border ='none'
+        // taskRef.current.style.border ='none'
     }
 
     function handleChange(e){

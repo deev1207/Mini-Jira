@@ -12,12 +12,14 @@ function CategoryLabel({text}){
 }
 
 
-export default function Category({name, id}){
-    const [tasks, setTasks] = useState([])
+export default function Category({name, id, column, setColumn,index}){
+    console.log(column);
+    const tasks = column[index].list
+    // const [tasks, setTasks] = useState()
     const [visible, setVisible] = useState(true)
+    const [active, setActive] = useState(false)
     const addIssueRef = useRef(null)
-    console.log(tasks);
-    
+    const activeRef = useRef(false)
     useEffect(()=>{
         console.log(tasks);
         function handleClickOutside(e){
@@ -26,7 +28,13 @@ export default function Category({name, id}){
             if(addIssueRef.current && !addIssueRef.current.contains(e.target) &&   e.target.parentElement && e.target.parentElement.id !== 'addIssue' && e.target.parentElement.id !== 'icon'){
                 console.log('out');
                 if(!visible){
-                    setTasks(tasks.slice(0,-1))
+                    let new_column = [...column]
+                    let new_list = [...column[index].list]
+                    new_list = new_list.slice(0,-1)
+                    new_column[index].list = new_list
+                    activeRef.current = false
+                    setColumn(new_column)
+                    // setTasks(tasks.slice(0,-1))
                     setVisible(true)
                 }
 
@@ -45,50 +53,46 @@ export default function Category({name, id}){
 
     function handleClick(){
         console.log('click');
+        console.log(tasks);
+        let new_column = [...column]
+        let new_list = [...column[index].list,{'id':`${id}${tasks.length}`, 'text': ''}]
+        new_column[index].list = new_list
+        activeRef.current = true
+        setColumn(new_column)
         // setTasks([...tasks, <Task handleKeyPress={handleKeyPress} id={tasks.length} uid={tasks.length} index={tasks.length}/>])
-        setTasks([...tasks, {'id':`${tasks.length}`, 'text': ''}])
+        // setTasks([...tasks, {'id':`${tasks.length}`, 'text': ''}])
         setVisible(false)
     }
 
-    function handleKeyPress(e, inputRef, taskRef, setActiveInput, index){
+    function handleKeyPress(e, inputRef, taskRef, setActiveInput, taskIndex){
         console.log(e);
         if (e.key === 'Enter') {
             // Enter key was pressed, trigger your event here
             setActiveInput(false)
             inputRef.current.blur()
-            const updated_array = [...tasks]
-            updated_array[index].text = inputRef.current.value
+            let new_column = [...column]
+            let new_list = [...column[index].list]
+            new_list[taskIndex].text = inputRef.current.value
+            new_column[index].list = new_list
+            activeRef.current = false
+            setColumn(new_column)
+            // const updated_array = [...tasks]
+            // updated_array[index].text = inputRef.current.value
             console.log('Enter key pressed');
             setVisible(true)
-            setTasks(updated_array)
+            // setTasks(updated_array)
           }
     }
 
 
-    function onDragEnd(result){
-        if (!result.destination) {
-            return;
-          }
-      
-          if (result.destination.index === result.source.index) {
-            return;
-          }
-      
-          const new_tasks = reorder(
-            tasks,
-            result.source.index,
-            result.destination.index
-          );
-      
-          setTasks(new_tasks);
-    }
+
 
 
 
 
 
     return(
-        <DragDropContext onDragEnd={onDragEnd}>
+       
         <Droppable droppableId={id}>
         {provided => (
                     <div className='category' id='addIssueDiv' ref={(el)=>{
@@ -97,7 +101,7 @@ export default function Category({name, id}){
                     }} {...provided.droppableProps}> 
                     <CategoryLabel text={name}/>
                     {tasks.map((task,index)=>(
-                        <Task key={task.id} index={index} task={task} handleKeyPress={handleKeyPress}/>
+                        <Task key={task.id} index={index} task={task} handleKeyPress={handleKeyPress} activeRef={activeRef}/>
                     ))}
                     {provided.placeholder}
                     {visible && (
@@ -113,15 +117,8 @@ export default function Category({name, id}){
                 
         )}
          </Droppable>
-         </DragDropContext>
+         
 
     )
 }
 
-function reorder(list, startIndex, endIndex){
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-  
-    return result;
-}
