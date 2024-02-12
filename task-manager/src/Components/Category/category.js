@@ -17,7 +17,6 @@ export default function Category({name, id, column, setColumn,index}){
     const tasks = column[index].list
     // const [tasks, setTasks] = useState()
     const [visible, setVisible] = useState(true)
-    const [active, setActive] = useState(false)
     const addIssueRef = useRef(null)
     const activeRef = useRef(false)
     useEffect(()=>{
