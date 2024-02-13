@@ -26,12 +26,10 @@ export default function Task({ handleKeyPress, task, index, activeRef }) {
     };
 
     function handleFocus() {
-        console.log('focus');
         setActiveInput(true)
     }
 
     function handleBlur() {
-        console.log('unfocus');
         setActiveInput(false)
     }
 
