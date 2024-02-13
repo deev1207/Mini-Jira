@@ -2,78 +2,113 @@ import './category.css';
 import Task from '../Task/task';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 
-
-
-function CategoryLabel({text}){
-    return(
+function CategoryLabel({ text }) {
+    return (
         <div className='CategoryLabel'>{text}</div>
     )
 }
 
 
-export default function Category(){
-    const [tasks, setTasks] = useState([])
+export default function Category({ name, id, column, setColumn, index }) {
+    console.log(column);
+    const tasks = column[index].list
     const [visible, setVisible] = useState(true)
     const addIssueRef = useRef(null)
+    const activeRef = useRef(false)
 
-    useEffect(()=>{
-        function handleClickOutside(e){
+    useEffect(() => {
+        console.log(tasks);
+        function handleClickOutside(e) {
             console.log(e);
-            if(addIssueRef.current && !addIssueRef.current.contains(e.target) &&   e.target.parentElement && e.target.parentElement.id !== 'addIssue' && e.target.parentElement.id !== 'icon'){
-                if(!visible){
-                    setTasks(tasks.slice(0,-1))
+
+            if (addIssueRef.current && !addIssueRef.current.contains(e.target) && e.target.parentElement && e.target.parentElement.id !== 'addIssue' && e.target.parentElement.id !== 'icon') {
+                if (!visible) {
+                    let new_column = [...column]
+                    let new_list = [...column[index].list]
+                    new_list = new_list.slice(0, -1)
+                    new_column[index].list = new_list
+                    activeRef.current = false
+                    setColumn(new_column)
                     setVisible(true)
                 }
 
-                
+
             }
 
         }
-        console.log('effect');
         document.body.addEventListener('click', handleClickOutside);
-        return()=>{
-            console.log('remove');
+        return () => {
             document.body.removeEventListener('click', handleClickOutside);
         }
-           
+
     }, [tasks, visible])
 
-    function handleClick(){
+    function handleClick() {
         console.log('click');
-        setTasks([...tasks, <Task handleKeyPress={handleKeyPress}/>])
+        console.log(tasks);
+        let new_column = [...column]
+        let new_list = [...column[index].list, { 'id': `${id}${tasks.length}`, 'text': '' }]
+        new_column[index].list = new_list
+        activeRef.current = true
+        setColumn(new_column)
         setVisible(false)
     }
 
-    function handleKeyPress(e, inputRef, taskRef, setActiveInput){
+    function handleKeyPress(e, inputRef, taskRef, setActiveInput, taskIndex) {
         console.log(e);
         if (e.key === 'Enter') {
-            // Enter key was pressed, trigger your event here
             setActiveInput(false)
             inputRef.current.blur()
-            taskRef.current.style.border = 'none';
-            console.log('Enter key pressed');
+            let new_column = [...column]
+            let new_list = [...column[index].list]
+            new_list[taskIndex].text = inputRef.current.value
+            new_column[index].list = new_list
+            activeRef.current = false
+            setColumn(new_column)
             setVisible(true)
-          }
+        }
     }
 
 
 
 
 
-    return(
-        <div className='category' id='addIssueDiv' ref={addIssueRef}> 
-            <CategoryLabel text={'Added'}/>
-            {tasks}
-            {visible && (
-                <a href='#' id='addIssue' className='addIssue' onClick={handleClick} > 
-                <FontAwesomeIcon icon={faPlus} className='customIcon' id='icon'/>
-                <span className='childIssues' >Create Issue</span>
-                </a>
-            )}
 
-            
-        </div>
+
+
+    return (
+
+        <Droppable droppableId={id}>
+            {provided => (
+                <div className='category' id='addIssueDiv' ref={(el) => {
+                    provided.innerRef(el)
+                    addIssueRef.current = el
+                }} {...provided.droppableProps}>
+                    <CategoryLabel text={name} />
+                    {tasks.map((task, index) => (
+                        <div className='taskDiv'>
+                            <Task key={task.id} index={index} task={task} handleKeyPress={handleKeyPress} activeRef={activeRef} />
+                        </div>
+                    ))}
+                    {provided.placeholder}
+                    {visible && (
+                        <a href='#' id='addIssue' className='addIssue' onClick={handleClick} >
+                            <FontAwesomeIcon icon={faPlus} className='customIcon' id='icon' />
+                            <span className='childIssues' >Create Issue</span>
+                        </a>
+                    )}
+
+
+                </div>
+
+
+            )}
+        </Droppable>
+
+
     )
 }
+
