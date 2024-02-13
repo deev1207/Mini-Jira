@@ -13,17 +13,13 @@ function CategoryLabel({ text }) {
 
 
 export default function Category({ name, id, column, setColumn, index }) {
-    console.log(column);
     const tasks = column[index].list
     const [visible, setVisible] = useState(true)
     const addIssueRef = useRef(null)
     const activeRef = useRef(false)
 
     useEffect(() => {
-        console.log(tasks);
         function handleClickOutside(e) {
-            console.log(e);
-
             if (addIssueRef.current && !addIssueRef.current.contains(e.target) && e.target.parentElement && e.target.parentElement.id !== 'addIssue' && e.target.parentElement.id !== 'icon') {
                 if (!visible) {
                     let new_column = [...column]
@@ -47,8 +43,6 @@ export default function Category({ name, id, column, setColumn, index }) {
     }, [tasks, visible])
 
     function handleClick() {
-        console.log('click');
-        console.log(tasks);
         let new_column = [...column]
         let new_list = [...column[index].list, { 'id': `${id}${tasks.length}`, 'text': '' }]
         new_column[index].list = new_list
@@ -58,7 +52,6 @@ export default function Category({ name, id, column, setColumn, index }) {
     }
 
     function handleKeyPress(e, inputRef, taskRef, setActiveInput, taskIndex) {
-        console.log(e);
         if (e.key === 'Enter') {
             setActiveInput(false)
             inputRef.current.blur()
