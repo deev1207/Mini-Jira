@@ -1,7 +1,7 @@
 {
   "name": "task-manager",
   "version": "0.1.0",
-  "homepage": "https://deev1207.github.io/task-manager",
+  "homepage": "https://deev1207.github.io/Mini-Jira/",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
