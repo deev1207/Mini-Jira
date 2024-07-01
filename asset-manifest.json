@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/Task-Manager/static/css/main.58d7aaed.css",
-    "main.js": "/Task-Manager/static/js/main.c584ae86.js",
-    "index.html": "/Task-Manager/index.html",
-    "main.58d7aaed.css.map": "/Task-Manager/static/css/main.58d7aaed.css.map",
-    "main.c584ae86.js.map": "/Task-Manager/static/js/main.c584ae86.js.map"
+    "main.css": "/Mini-Jira/static/css/main.58d7aaed.css",
+    "main.js": "/Mini-Jira/static/js/main.c584ae86.js",
+    "index.html": "/Mini-Jira/index.html",
+    "main.58d7aaed.css.map": "/Mini-Jira/static/css/main.58d7aaed.css.map",
+    "main.c584ae86.js.map": "/Mini-Jira/static/js/main.c584ae86.js.map"
   },
   "entrypoints": [
     "static/css/main.58d7aaed.css",
